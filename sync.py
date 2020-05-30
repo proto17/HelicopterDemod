@@ -1,7 +1,12 @@
 #!/usr/bin/python
 
+# This script is used to synchronize on the 0x03 0x02 pattern (end of frame, start of frame markers)
+# Expects input to be literal ASCII '1' and '0' characters.  Output will be the same format, but
+# synchronized such that a take 8, skip 2 will produce valid ASCII output
+
 import sys
 
+# Patterns are for 0x03 and 0x02, but bit reversed!!
 patt_one = '11000000'
 patt_two = '01000000'
 
