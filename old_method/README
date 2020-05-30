@@ -1,0 +1,26 @@
+The example file is 29May_2 and the format is unsigned 8 bit stereo.  This means that you will need to remove the first channel (doesn't contain 
+any useful data) before applying any DSP operations!
+
+The output of the GNU Radio graph is a file that contains unpacked 1 and 0 values.  Meaning that every single byte in the output file
+will be either 0x01 or 0x00. 
+
+The unpack.py script reads in the \x01 and \x00 data from the GNU Radio graph and outputs literal ASCII '1' and '0' values.  You'll notice that the
+bits are flipped in the script (\x01 outputs '0' and \x00 outputs '1')
+
+The data coming out of GNU Radio will not be synchronized.  The format of the protocol is that there are 10 bit frames, and only 8 of those bits
+are the ASCII that you want.  The other two bits need to be removed.  
+
+
+The pack_bits.py script will both read in the '1' and '0' outputs from unpack.py as well as skip N bits, then begin extracting the 8 bit ASCII.
+You need to know what the correct N bit offset is
+
+To find the N bit offset, you can use search.sh.  It will walk through all 10 possible bit shifts, and output the first few thousand bytes for you 
+to lay your eyeballs on.  Press 'enter' to step the bit offset along.  Take note of the offset that works
+
+Using the known offset, you can decode the entire file with decode.sh by passing the N bit offset as the only argument
+
+
+./search.sh 
+
+The example file has a shift of 2
+./decode.sh 2
